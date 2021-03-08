@@ -1,1 +1,7 @@
 https://ourworldindata.org/marriages-and-divorces
+https://www.multpl.com/united-states-population/table/by-month
+https://finance.yahoo.com/quote/FB/history?period1=1337299200&period2=1615161600&interval=1wk&filter=history&frequency=1wk&includeAdjustedClose=true
+https://www.pewresearch.org/internet/chart/internet-use-over-time/
+https://www.pewresearch.org/internet/fact-sheet/social-media/
+https://crime-data-explorer.fr.cloud.gov/downloads-and-docs
+https://api.usa.gov/crime/fbi/sapi/api/data/arrest/national/offense/monthly/1999/2019?API_KEY=iiHnOKfno2Mgkt5AynpvPpUQTEyxE77jo1RU8PIv
