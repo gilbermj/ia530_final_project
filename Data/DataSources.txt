@@ -5,3 +5,7 @@ https://www.pewresearch.org/internet/chart/internet-use-over-time/
 https://www.pewresearch.org/internet/fact-sheet/social-media/
 https://crime-data-explorer.fr.cloud.gov/downloads-and-docs
 https://api.usa.gov/crime/fbi/sapi/api/data/arrest/national/offense/monthly/1999/2019?API_KEY=iiHnOKfno2Mgkt5AynpvPpUQTEyxE77jo1RU8PIv
+https://www.cdc.gov/brfss/annual_data/annual_data.htm
+https://fred.stlouisfed.org/series/USALORSGPNOSTSAM
+https://fred.stlouisfed.org/series/CPALTT01USQ657N
+https://fred.stlouisfed.org/series/GDP

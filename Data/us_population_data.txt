@@ -1,3 +1,4 @@
+date	population
 Dec 1, 2020 	330.66 million
 Nov 1, 2020 	330.53 million
 Oct 1, 2020 	330.38 million
