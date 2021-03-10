@@ -239,8 +239,13 @@ master_data_7 <- master_data_6 %>%
 write_csv(master_data_7, here('Data','master_data.csv'))
 
 
+test_longer <- master_data_7 %>%
+  pivot_longer(cols=ment_health_no_good:unemp_per, names_to='variable', values_to='values')
 
 
+ggplot(test_longer, aes(x=month_end,y=values)) +
+  geom_line() +
+  facet_wrap(~variable,scales="free")
 
 
 
