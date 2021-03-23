@@ -1,0 +1,31 @@
+Names,Description,Social/Economic,Imputed,Source,URL
+month_end,The last day of the month,Date,,,
+ment_health_no_good_18_24,"This comes from the Behavioral Risk Factor Surveillance System (BRFSS) from the CDC.  This is the percentage of respondents between the age 18 and 24 that responded 1 or more (up to 30) to the following question: ""Now thinking about your mental health, which includes stress, depression, and problems with emotions, for how many days during the past 30 days was your mental health not good?""",Social,,CDC,https://www.cdc.gov/brfss/annual_data/annual_2019.html
+genhlth_no_good_18_24,"This comes from the Behavioral Risk Factor Surveillance System (BRFSS) from the CDC.  This is the percentage of respondents between the age 18 and 24 that responded Poor to the following question ""Would you say that in general your health is:"".  Other responses included Excellent, Very Good, Good, Fair and Don't Know/Not Sure, Refused.",Social,,CDC,https://www.cdc.gov/brfss/annual_data/annual_2019.html
+divorced_widowed_separated_18_24,"This comes from the Behavioral Risk Factor Surveillance System (BRFSS) from the CDC.  This is the percentage of respondents between the age 18 and 24 that responded Divorced, Widowed or Separated to the following question ""Are you: (marital status)"".  Other responses included Married, Never Married, A member of an unmarried couple or refused.",Social,,CDC,https://www.cdc.gov/brfss/annual_data/annual_2019.html
+ment_health_no_good_25on,Same as above except for age 25+,Social,,CDC,https://www.cdc.gov/brfss/annual_data/annual_2019.html
+genhlth_no_good_25on,Same as above except for age 25+,Social,,CDC,https://www.cdc.gov/brfss/annual_data/annual_2019.html
+divorced_widowed_separated_25on,Same as above except for age 25+,Social,,CDC,https://www.cdc.gov/brfss/annual_data/annual_2019.html
+ment_health_no_good,Same as above except for all ages,Social,,CDC,https://www.cdc.gov/brfss/annual_data/annual_2019.html
+genhlth_no_good,Same as above except for all ages,Social,,CDC,https://www.cdc.gov/brfss/annual_data/annual_2019.html
+divorced_widowed_separated,Same as above except for all ages,Social,,CDC,https://www.cdc.gov/brfss/annual_data/annual_2019.html
+avg_close_apple_stock,Avg close price for the month for apple.  Proxy variable for social media/internet usage,Social,,Yahoo,https://finance.yahoo.com/quote/AAPL/history?p=AAPL
+avg_close_atandt_stock,Avg close price for the month for AT&T. Proxy variable for social media/internet usage,Social,,Yahoo,https://finance.yahoo.com/quote/T/history?p=T
+avg_close_facebook_stock,Avg close price for the month for facebook. Proxy variable for social media/internet usage,Social,,Yahoo,https://finance.yahoo.com/quote/FB/history?p=FB
+avg_close_tmobile_stock,Avg close price for the month for tmobile. Proxy variable for social media/internet usage,Social,,Yahoo,https://finance.yahoo.com/quote/TMUS/history?p=TMUS
+avg_close_twitter_stock,Avg close price for the month for twitter. Proxy variable for social media/internet usage,Social,,Yahoo,https://finance.yahoo.com/quote/TWTR/history?p=TWTR
+avg_close_verizon_stock,Avg close price for the month for verizon. Proxy variable for social media/internet usage,Social,,Yahoo,https://finance.yahoo.com/quote/VZ/history?p=VZ
+gdp_quart,the quarterly gdp,Economic,,St Louis Fed,https://fred.stlouisfed.org/series/GDPC1
+gdp_fill,gdp back-filled by month using quarterly data,Economic,Y,St Louis Fed,https://fred.stlouisfed.org/series/GDPC1
+x0_24_suicides,number of suicides between 0 and 24 from CDC,Dependent Variable,,CDC,https://wonder.cdc.gov/cmf-icd10.html
+x25on_suicides,number of suicides 25 and onfrom CDC,Dependent Variable,,CDC,https://wonder.cdc.gov/cmf-icd10.html
+all_social_media_usage,"social media usage from various Pew polls.  This was very scarce and all month end values were kept the same from the most recent poll.  For example, if the poll was done as of 3/08/2008 then the month end would be 3/31/2008 and this value would be forward filled for all month end dates until a new poll was done.  The same approach was used for all Pew data.",Social,Y,Pew,https://www.pewresearch.org/internet/fact-sheet/social-media/
+x18_29_social_media_usage,social media usage from various Pew polls,Social,Y,Pew,https://www.pewresearch.org/internet/fact-sheet/social-media/
+x30_49_social_media_usage,social media usage from various Pew polls,Social,Y,Pew,https://www.pewresearch.org/internet/fact-sheet/social-media/
+x50_64_social_media_usage,social media usage from various Pew polls,Social,Y,Pew,https://www.pewresearch.org/internet/fact-sheet/social-media/
+x65_social_media_usage,social media usage from various Pew polls,Social,Y,Pew,https://www.pewresearch.org/internet/fact-sheet/social-media/
+population_num_million,population in millions from Census data,,,Census Bureau,https://www.multpl.com/united-states-population/table/by-month
+broadband_usage_per,broadband usage from various Pew research polls,Social,Y,Pew,https://www.pewresearch.org/internet/fact-sheet/internet-broadband/
+unemp_per,unemployment from department of labor,Economic,,Deparment of Labor,https://data.bls.gov/cgi-bin/surveymost?bls
+psavert,personal savings rate from St Louis Fed,Economic,,St Louis Fed,https://fred.stlouisfed.org/series/PSAVERT
+personal_save_rate,,Economic,,St Louis Fed,psavert as percent

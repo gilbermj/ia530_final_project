@@ -6,12 +6,29 @@ library(janitor)
 beginning <- ymd('1999-01-01')
 end <- ymd('2019-12-31')
 
-brfss_data <- read_csv(here('Data','all_brfss_data.csv'))
+brfss_data <- read_csv(here('Data','all_brfss_data.csv'), col_types=cols(x_age_g=col_double()))
 
 brfss_codes <- read_csv(here('Data','brfss_codes.csv')) %>%
   clean_names()
 
 brfss_data <- brfss_data %>%
+  mutate(age_pre_2013=case_when(between(age, 18,24) ~ 1,
+                                between(age,25,34) ~ 2,
+                                between(age,35,44) ~ 3,
+                                between(age,45,54) ~ 4,
+                                between(age,55,64) ~ 5,
+                                between(age,65,99) ~ 6,
+                                TRUE ~ as.numeric(NA)),
+         age_final = if_else(is.na(x_age_g), age_pre_2013, x_age_g),
+         age_group = case_when(is.na(age_final)~as.character(NA),
+                               age_final==1~'18-24',
+                               TRUE~'25+'))
+
+brfss_data_cons <- brfss_data %>%
+  group_by(month_end, age_group, marital, genhlth, menthlth) %>%
+  summarize(count=sum(count))
+
+brfss_data_cons <- brfss_data_cons %>%
   left_join(brfss_codes %>% filter(variable_name=='MARITAL') %>% select(value, value_label), by=c('marital'='value')) %>%
   left_join(brfss_codes %>% filter(variable_name=='GENHLTH') %>% select(value, value_label), by=c('genhlth'='value'), suffix=c('_marital','_genhlth')) %>%
   left_join(brfss_codes %>% filter(variable_name=='MENTHLTH') %>% select(value, value_label), by=c('menthlth'='value')) %>%
@@ -22,6 +39,12 @@ brfss_data <- brfss_data %>%
   mutate(value_label_menthlth_cond = if_else(grepl('[[:digit:]]',value_label_menthlth),'Mntl Health Not Good','Mental Health Good/No Answer'),
          value_label_marital_cond = if_else(value_label_marital %in% c('Divorced', 'Widowed', 'Separated'),'Divorced/Widowed/Separated','Married/NeverMarried/MemberOfUnmarriedCouple'),
          value_label_genhlth_cond = if_else(value_label_genhlth %in% c('Poor'),'Poor Gen Health','Good Gen Health/No Answer'))
+
+brfss_adol_data <- brfss_data_cons %>%
+  filter(age_group=='18-24')
+
+brfss_adult_data <- brfss_data_cons %>%
+  filter(age_group=='25+')
 
 ment_health_no_good <- brfss_data %>%
   filter(!is.na(menthlth)) %>%

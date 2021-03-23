@@ -47,3 +47,17 @@ Value,Value Label,Variable_Name
 88,None,MENTHLTH
 77,Dont know/Not sure,MENTHLTH
 99,Refused,MENTHLTH
+7,Don't know/Not sure,AGE
+9,Refused,AGE
+18-24,18-24,AGE
+25-34,25-34,AGE
+35-44,35-44,AGE
+45-54,45-54,AGE
+55-64,55-64,AGE
+65-99,65-99,AGE
+1,18-24,X_AGE_G
+2,25-34,X_AGE_G
+3,35-44,X_AGE_G
+4,45-54,X_AGE_G
+5,55-64,X_AGE_G
+6,65-99,X_AGE_G
