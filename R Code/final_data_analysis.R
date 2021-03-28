@@ -21,7 +21,7 @@ ggplot(data_longer, aes(x=month_end,y=values)) +
 
 main_theme <- theme(panel.grid = element_blank(),
                     panel.background = element_blank(),
-                    plot.title = element_text(size=12),
+                    plot.title = element_text(size=10),
                     plot.subtitle = element_text(size=8),
                     axis.title.x = element_text(size=8),
                     axis.title.y = element_text(size=8),
@@ -164,7 +164,7 @@ names(final_data_2)[16:27] <- gsub('month_name_','',names(final_data_2)[16:27])
 
 ts_final_data <- ts(final_data_2, start=c(1999,1), frequency=12)
 
-x24under_sa <- lm(x0_24_suicides_per_thous ~ Feb+Mar+Apr+May+Jun+Jul+Aug+Sep+Oct+Nov+Dec, data=ts_final_data)
+x24under_sa <- lm(x0_24_suicides_per_thous ~ Jan+Feb+Mar+Apr+May+Jun+Jul+Aug+Sep+Oct+Nov, data=ts_final_data)
 summary(x24under_sa)
 
 x24under_sa <- lm(x0_24_suicides_per_thous ~ Feb+Mar+Apr+May+Jun+Jul+Aug+Sep+Oct+Nov+Dec, data=ts_final_data)
@@ -229,3 +229,38 @@ summary(FDL)
 ### Autoregressive Distributed Lag Models
 ARDL <- dynlm(UNRATE ~ L(UNRATE, 1:4)  + L(oil, 0:4) + L(FEDFUNDS, 0:4), data = Data)
 summary(model_1)
+
+x24_under <- final_data_2 %>%
+  select(ment_health_no_good_18_24,
+         genhlth_no_good_18_24,
+         divorced_widowed_separated,
+         avg_close_apple_stock,
+         avg_close_atandt_stock,
+         avg_close_verizon_stock,
+         unemp_per,
+         personal_save_rate,
+         x0_24_suicides_per_thous) %>%
+  ts()
+
+fit <- VAR(x24_under, lag.max = 12, ic = "AIC")
+summary(fit)
+
+x25_over <- final_data_2 %>%
+  select(ment_health_no_good_25on,
+         genhlth_no_good_25on,
+         divorced_widowed_separated,
+         avg_close_apple_stock,
+         avg_close_atandt_stock,
+         avg_close_verizon_stock,
+         unemp_per,
+         personal_save_rate,
+         x25on_suicides_per_thous) %>%
+  ts()
+
+fit <- VAR(x25_over, lag.max = 12, ic = "AIC")
+summary(fit)
+
+res_output_y <- irf(fit,impulse=c("y"), response=c("y"), n.ahead=12, cumulative = TRUE,runs=1000, ci=0.95)
+res_output_w <- irf(fit,impulse=c("w"), response="y", n.ahead=12, cumulative = TRUE,runs=100, ci=0.95)
+res_oil_w <- irf(fit,impulse=c("w"), response=c("w"), n.ahead=12, cumulative = TRUE,runs=1000, ci=0.95)
+res_oil_y <- irf(fit,impulse=c("y"), response="w", n.ahead=12, cumulative = TRUE,runs=100, ci=0.95)
