@@ -286,8 +286,8 @@ master_data_6 <- master_data_5 %>%
             ment_health_no_good,
             psavert)) %>%
   ungroup() %>%
-  mutate(x0_24_suicides_per_thous = x0_24_suicides/population_num_million*1000,
-         x25on_suicides_per_thous = x25on_suicides/population_num_million*1000)
+  mutate(x0_24_suicides_per_thous = x0_24_suicides/(population_num_million*1000000)*1000,
+         x25on_suicides_per_thous = x25on_suicides/(population_num_million*1000000)*1000)
 
 
 write_csv(master_data_6, here('Data','final_data.csv'))
