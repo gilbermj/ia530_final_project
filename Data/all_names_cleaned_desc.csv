@@ -1,0 +1,14 @@
+variable_name,clean_name,description
+month_end,Month End,the last day of the month
+avg_close_apple_stock,Avg Close Apple Stock,Avg close price for the month for apple.  Proxy variable for social media/internet usage
+avg_close_atandt_stock,Avg Close AT&T Stock,Avg close price for the month for AT&T. Proxy variable for social media/internet usage
+avg_close_verizon_stock,Avg Close Verizon Stock,Avg close price for the month for verizon. Proxy variable for social media/internet usage
+divorced_widowed_separated,Divorced/Widowed/Separated,"This comes from the Behavioral Risk Factor Surveillance System (BRFSS) from the CDC.  This is the percentage of respondents between that responded Divorced, Widowed or Separated to the following question ""Are you: (marital status)"".  Other responses included Married, Never Married, A member of an unmarried couple or refused."
+genhlth_no_good_18_24,24 and Under General Health Not Good,"This comes from the Behavioral Risk Factor Surveillance System (BRFSS) from the CDC.  This is the percentage of respondents between the age 18 and 24 that responded Poor to the following question ""Would you say that in general your health is:"".  Other responses included Excellent, Very Good, Good, Fair and Don't Know/Not Sure, Refused."
+genhlth_no_good_25on,25 and Over General Health Not Good,Same as above except for age 25+
+ment_health_no_good_18_24,24 and Under Mental Health Not Good,"This comes from the Behavioral Risk Factor Surveillance System (BRFSS) from the CDC.  This is the percentage of respondents between the age 18 and 24 that responded 1 or more (up to 30) to the following question: ""Now thinking about your mental health, which includes stress, depression, and problems with emotions, for how many days during the past 30 days was your mental health not good?"""
+ment_health_no_good_25on,25 and Over Mental Health Not Good,Same as above except for age 25+
+personal_save_rate,Personal Savings Rate,personal savings rate from St Louis Fed
+unemp_per,Unemployment Rate,unemployment from department of labor
+x0_24_suicides_per_thous,24 and Under Suicides Per Thousand,number of suicides per thousand people in the US between 0 and 24 from CDC
+x25on_suicides_per_thous,25 and Over Suicides Per Thousand,number of suicides per thousand people in the US 25 and on from CDC

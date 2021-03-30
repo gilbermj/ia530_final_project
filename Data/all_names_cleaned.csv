@@ -1,0 +1,44 @@
+all_names,clean_name
+month_end,Month End
+ment_health_no_good_18_24,24 and Under Mental Health Not Good
+genhlth_no_good_18_24,24 and Under General Health Not Good
+ment_health_no_good_25on,25 and Over Mental Health Not Good
+genhlth_no_good_25on,25 and Over General Health Not Good
+divorced_widowed_separated,Divorced/Widowed/Separated
+avg_close_apple_stock,Avg Close Apple Stock
+avg_close_atandt_stock,Avg Close AT&T Stock
+avg_close_verizon_stock,Avg Close Verizon Stock
+unemp_per,Unemployment Rate
+personal_save_rate,Personal Savings Rate
+x0_24_suicides_per_thous,24 and Under Suicides Per Thousand
+x25on_suicides_per_thous,25 and Over Suicides Per Thousand
+month_num,Month Number
+month_name,Month Name
+Apr,Apr
+Aug,Aug
+Dec,Dec
+Feb,Feb
+Jan,Jan
+Jul,Jul
+Jun,Jun
+Mar,Mar
+May,May
+Nov,Nov
+Oct,Oct
+Sep,Sep
+x24under_suicide_sa,24 and Under Suicides Per Thousand
+x25over_suicide_sa,25 and Over Suicides Per Thousand
+x24under_ment_hlth_sa,24 and Under Mental Health Not Good
+x25over_ment_hlth_sa,25 and Over Mental Health Not Good
+genhlth_no_good_18_24_noTrend,24 and Under General Health Not Good
+genhlth_no_good_25on_noTrend,25 and Over General Health Not Good
+divorced_widowed_separated_noTrend,Divorced/Widowed/Separated
+avg_close_apple_stock_noTrend,Avg Close Apple Stock
+avg_close_atandt_stock_noTrend,Avg Close AT&T Stock
+avg_close_verizon_stock_noTrend,Avg Close Verizon Stock
+unemp_per_noTrend,Unemployment Rate
+personal_save_rate_noTrend,Personal Savings Rate
+x24under_suicide_sa_noTrend,24 and Under Suicides Per Thousand
+x25over_suicide_sa_noTrend,25 and Over Suicides Per Thousand
+x24under_ment_hlth_sa_noTrend,24 and Under Mental Health Not Good
+x25over_ment_hlth_sa_noTrend,25 and Over Mental Health Not Good
