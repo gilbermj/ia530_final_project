@@ -25,7 +25,7 @@ graph_vars <- function(data, vars, clean, dollars, percents, theme){
       theme
     
     if(grepl('_sa',i) & !grepl('_station',i)){
-      temp_plot <- temp_plot + labs(title=paste(clean_name,' - Seasonally Adjusted', sep=''), x='', y='')
+      temp_plot <- temp_plot + labs(title=paste(clean_name,'\n - Seasonally Adjusted', sep=''), x='', y='')
     } else if(grepl('_station',i)) {
       temp_plot <- temp_plot + labs(title=paste(clean_name,' - Stationary', sep=''), x='', y='')
     } else {
@@ -203,7 +203,14 @@ var_models <- function(data, vars, out_months, response, runs=100, against_self=
     
     # get the nice names for graphing
     clean_name <- as.character(clean_names %>% filter(var_name==name) %>% dplyr::select(clean_name))
+    
+    clean_name <- gsub('Adolescents','', clean_name)
+    clean_name <- gsub('Adults','', clean_name)
+    
     response_name <- as.character(clean_names %>% filter(var_name==response) %>% dplyr::select(clean_name))
+    
+    response_name <- gsub('Adolescents','', response_name)
+    response_name <- gsub('Adults','', response_name)
     
     if(name!='month_end' & (name!=response | against_self)){
       
@@ -213,12 +220,12 @@ var_models <- function(data, vars, out_months, response, runs=100, against_self=
         geom_line(data=irf, aes_string(x='month', y=name)) + # irf
         geom_line(data=upper, aes_string(x='month', y=name), color='red', alpha=0.75, linetype = "dashed") + #upper bound
         geom_hline(yintercept=0) +
-        scale_x_continuous(breaks=seq(from=2, to=out_months, by=2)) +
+        scale_x_continuous(breaks=seq(from=2, to=out_months, by=4)) +
         scale_y_continuous(labels = percent, limits=c(min_lower,max_upper)) +
         main_theme +
         labs(x='Month', 
-             y='Percent', 
-             title=paste('Response of ',response_name,' \nto a ',clean_name,' Shock',sep=''))
+             y='', 
+             title=paste('Response: ',response_name,' \nShock: ',clean_name,sep=''))
       
       temp_list <- append(temp_list, list(temp_plot))
       
@@ -255,7 +262,7 @@ clean_names <- read_csv(here('Data', 'all_names_cleaned.csv'))
 
 main_theme <- theme(panel.grid = element_blank(),
                     panel.background = element_blank(),
-                    plot.title = element_text(size=10),
+                    plot.title = element_text(size=12),
                     plot.subtitle = element_text(size=8),
                     axis.title.x = element_text(size=8),
                     axis.title.y = element_text(size=8),
@@ -272,20 +279,20 @@ percents <- c('ment24', 'gen24', 'ment25', 'gen25', 'unemp', 'divorced')
 temp_list <- graph_vars(final_data, c('suicide24', 'suicide25'), clean_names, dollars, percents, main_theme)
 
 grid <- grid.arrange(grobs=temp_list, nrow=1,top='')
-ggsave(here('Plots', 'suicide_variables.png'),plot=grid,dpi=300, width = 11.5, height = 7, units='in')
+ggsave(here('Plots', 'suicide_variables.png'),plot=grid,dpi=300, width = 15, height = 7, units='in')
 
 # graph the common variables
 temp_list <- graph_vars(final_data, common_vars, clean_names, dollars, percents, main_theme)
 
-grid <- grid.arrange(grobs=temp_list, nrow=2,top='Common Variables')
-ggsave(here('Plots', 'common_variables.png'),plot=grid,dpi=300, width = 11.5, height = 9, units='in')
+grid <- grid.arrange(grobs=temp_list, nrow=2,top='')
+ggsave(here('Plots', 'common_variables.png'),plot=grid,dpi=300, width = 15, height = 9, units='in')
 
 # graph the age variables
 
 temp_list <- graph_vars(final_data, age_vars, clean_names, dollars, percents, main_theme)
 
-grid <- grid.arrange(grobs=temp_list, nrow=2,top='Age Variables')
-ggsave(here('Plots', 'age_variables.png'),plot=grid,dpi=300, width = 11.5, height = 9, units='in')
+grid <- grid.arrange(grobs=temp_list, nrow=2,top='')
+ggsave(here('Plots', 'age_variables.png'),plot=grid,dpi=300, width = 15, height = 9, units='in')
 
 # Create month dummy variables
 
@@ -367,14 +374,18 @@ final_data_3 <- bind_cols(final_data_2,
 final_data_3 <- final_data_3 %>%
   dplyr::select(!month_num:Sep)
 
-ba_vars <- c('ment24', 'ment24_sa', 'suicide24', 'suicide24_sa', 'ment25', 'ment25_sa', 'suicide25', 'suicide25_sa')
 
 percents <- c(percents, 'ment24_sa', 'ment25_sa')
 
-temp_list <- graph_vars(final_data_3, ba_vars, clean_names, dollars, percents, main_theme)
+temp_list <- graph_vars(final_data_3, c('ment24', 'suicide24', 'ment25', 'suicide25'), clean_names, dollars, percents, main_theme)
 
-grid <- grid.arrange(grobs=temp_list, nrow=4,top='Before & After Seasonal Adjustment')
-ggsave(here('Plots', 'ba_season_adjust.png'),plot=grid,dpi=300, width = 8, height = 11, units='in')
+grid <- grid.arrange(grobs=temp_list, nrow=1,top='')
+ggsave(here('Plots', 'before_season_adjust.png'),plot=grid,dpi=300, width = 15, height = 4, units='in')
+
+temp_list <- graph_vars(final_data_3, c('ment24_sa', 'suicide24_sa', 'ment25_sa', 'suicide25_sa'), clean_names, dollars, percents, main_theme)
+
+grid <- grid.arrange(grobs=temp_list, nrow=1,top='')
+ggsave(here('Plots', 'after_season_adjust.png'),plot=grid,dpi=300, width = 15, height = 4, units='in')
 
 ts_final_data <- ts(final_data_3, start=c(1999,1), frequency=12)
 
@@ -440,18 +451,27 @@ age_vars <- c('gen24_station', 'ment24_sa_station', 'suicide24_sa_station', 'gen
 
 temp_list <- graph_vars(final_data_3, common_vars, clean_names, dollars, percents, main_theme)
 
-grid <- grid.arrange(grobs=temp_list, nrow=2,top='Common Variables - Stationary')
-ggsave(here('Plots', 'common_variables_stationary.png'),plot=grid,dpi=300, width = 11.5, height = 9, units='in')
+grid <- grid.arrange(grobs=temp_list, nrow=2,top='')
+ggsave(here('Plots', 'common_variables_stationary.png'),plot=grid,dpi=300, width = 17, height = 8, units='in')
 
 temp_list <- graph_vars(final_data_3, age_vars, clean_names, dollars, percents, main_theme)
 
-grid <- grid.arrange(grobs=temp_list, nrow=2,top='Age Variables - Stationary')
-ggsave(here('Plots', 'age_variables_stationary.png'),plot=grid,dpi=300, width = 11.5, height = 9, units='in')
+grid <- grid.arrange(grobs=temp_list, nrow=2,top='')
+ggsave(here('Plots', 'age_variables_stationary.png'),plot=grid,dpi=300, width = 17, height = 8, units='in')
 
-height <- 6
-width <- 11.5
+main_theme <- theme(panel.grid = element_blank(),
+                    panel.background = element_blank(),
+                    plot.title = element_text(size=11),
+                    plot.subtitle = element_text(size=8),
+                    axis.title.x = element_text(size=8),
+                    axis.title.y = element_text(size=8),
+                    axis.text.x = element_text(size=8),
+                    axis.text.y = element_text(size=8))
+
+height <- 5
+width <- 17
 runs <- 500
-out_months <- 36
+out_months <- 30
 
 temp_var_plots <- var_models(final_data_3, 
                     c('gen24_station', 'ment24_sa_station'), 
@@ -461,7 +481,7 @@ temp_var_plots <- var_models(final_data_3,
                     against_self=T, 
                     clean=clean_names)
 
-grid <- grid.arrange(grobs=temp_var_plots, nrow=1,top='')
+grid <- grid.arrange(grobs=temp_var_plots, nrow=1,top='Adolescents')
 ggsave(here('Plots', 'age24only_VAR.png'),plot=grid,dpi=300, width = width, height = height, units='in')
 
 temp_var_plots <- var_models(final_data_3, 
@@ -472,7 +492,7 @@ temp_var_plots <- var_models(final_data_3,
                     against_self=T, 
                     clean=clean_names)
 
-grid <- grid.arrange(grobs=temp_var_plots, nrow=1,top='')
+grid <- grid.arrange(grobs=temp_var_plots, nrow=1,top='Adolescents')
 ggsave(here('Plots', 'age24only_reverse_VAR.png'),plot=grid,dpi=300, width = width, height = height, units='in')
 
 temp_var_plots <- var_models(final_data_3, 
@@ -480,10 +500,10 @@ temp_var_plots <- var_models(final_data_3,
                              out_months = out_months, 
                              response = 'suicide24_sa_station', 
                              runs=runs, 
-                             against_self=F, 
+                             against_self=T, 
                              clean=clean_names)
 
-grid <- grid.arrange(grobs=temp_var_plots, nrow=2,top='')
+grid <- grid.arrange(grobs=temp_var_plots, nrow=1,top='Adolescents')
 ggsave(here('Plots', 'age24commonSocietal_VAR.png'),plot=grid,dpi=300, width = width, height = height, units='in')
 
 temp_var_plots <- var_models(final_data_3, 
@@ -491,11 +511,11 @@ temp_var_plots <- var_models(final_data_3,
                              out_months = out_months, 
                              response = 'suicide24_sa_station', 
                              runs=runs, 
-                             against_self=F, 
+                             against_self=T, 
                              clean=clean_names)
 
-grid <- grid.arrange(grobs=temp_var_plots, nrow=2,top='')
-ggsave(here('Plots', 'age24commonEconomic_VAR.png'),plot=grid,dpi=300, width = width, height = height, units='in')
+grid <- grid.arrange(grobs=temp_var_plots, nrow=1,top='Adolescents')
+ggsave(here('Plots', 'age24commonEconomic_VAR.png'),plot=grid,dpi=300, width = 12, height = height, units='in')
 
 temp_var_plots <- var_models(final_data_3, 
                              c('ment24_sa_station', 'gen24_station', 'apple_station', 'divorced_station', 'savings_station', 'unemp_station'), 
@@ -507,13 +527,15 @@ temp_var_plots <- var_models(final_data_3,
 height <- 7
 width <- 11.5
 
-grid <- grid.arrange(grobs=temp_var_plots, nrow=3,top='')
+layout <- rbind(c(1,2,3), c(4,5,6), c(NA,7,NA))
+
+grid <- grid.arrange(grobs=temp_var_plots,layout_matrix=layout, nrow=3,top='Adolescents')
 ggsave(here('Plots', 'age24all_VAR.png'),plot=grid,dpi=300, width = width, height = height, units='in')
 
-## 25 and older
+# 25 and older
 
-height <- 6
-width <- 11.5
+height <- 5
+width <- 17
 
 temp_var_plots <- var_models(final_data_3, 
                              c('gen25_station', 'ment25_sa_station'), 
@@ -523,7 +545,7 @@ temp_var_plots <- var_models(final_data_3,
                              against_self=T, 
                              clean=clean_names)
 
-grid <- grid.arrange(grobs=temp_var_plots, nrow=1,top='')
+grid <- grid.arrange(grobs=temp_var_plots, nrow=1,top='Adults')
 ggsave(here('Plots', 'age25only_VAR.png'),plot=grid,dpi=300, width = width, height = height, units='in')
 
 temp_var_plots <- var_models(final_data_3, 
@@ -534,7 +556,7 @@ temp_var_plots <- var_models(final_data_3,
                              against_self=T, 
                              clean=clean_names)
 
-grid <- grid.arrange(grobs=temp_var_plots, nrow=1,top='')
+grid <- grid.arrange(grobs=temp_var_plots, nrow=1,top='Adults')
 ggsave(here('Plots', 'age25only_reverse_VAR.png'),plot=grid,dpi=300, width = width, height = height, units='in')
 
 temp_var_plots <- var_models(final_data_3, 
@@ -542,10 +564,10 @@ temp_var_plots <- var_models(final_data_3,
                              out_months = out_months, 
                              response = 'suicide25_sa_station', 
                              runs=runs, 
-                             against_self=F, 
+                             against_self=T, 
                              clean=clean_names)
 
-grid <- grid.arrange(grobs=temp_var_plots, nrow=2,top='')
+grid <- grid.arrange(grobs=temp_var_plots, nrow=1,top='Adults')
 ggsave(here('Plots', 'age25commonSocietal_VAR.png'),plot=grid,dpi=300, width = width, height = height, units='in')
 
 temp_var_plots <- var_models(final_data_3, 
@@ -553,11 +575,11 @@ temp_var_plots <- var_models(final_data_3,
                              out_months = out_months, 
                              response = 'suicide25_sa_station', 
                              runs=runs, 
-                             against_self=F, 
+                             against_self=T, 
                              clean=clean_names)
 
-grid <- grid.arrange(grobs=temp_var_plots, nrow=2,top='')
-ggsave(here('Plots', 'age25commonEconomic_VAR.png'),plot=grid,dpi=300, width = width, height = height, units='in')
+grid <- grid.arrange(grobs=temp_var_plots, nrow=1,top='Adults')
+ggsave(here('Plots', 'age25commonEconomic_VAR.png'),plot=grid,dpi=300, width = 12, height = height, units='in')
 
 temp_var_plots <- var_models(final_data_3, 
                              c('ment25_sa_station', 'gen25_station', 'apple_station', 'divorced_station', 'savings_station', 'unemp_station'), 
@@ -566,10 +588,12 @@ temp_var_plots <- var_models(final_data_3,
                              runs=runs, 
                              against_self=T, 
                              clean=clean_names)
-height <- 7
+height <- 6
 width <- 11.5
 
-grid <- grid.arrange(grobs=temp_var_plots, nrow=3,top='')
+layout <- rbind(c(1,2,3), c(4,5,6), c(NA,7,NA))
+
+grid <- grid.arrange(grobs=temp_var_plots,layout_matrix=layout, nrow=3,top='Adults')
 ggsave(here('Plots', 'age25all_VAR.png'),plot=grid,dpi=300, width = width, height = height, units='in')
 
 temp_var_plots_1 <- var_models(final_data_3, 
@@ -588,13 +612,26 @@ temp_var_plots_2 <- var_models(final_data_3,
                              against_self=F, 
                              clean=clean_names)
 
-temp_list <- c(list(temp_var_plots_1[[1]] +  scale_y_continuous(labels = percent, limits=c(-0.02,0.02))), 
-               list(temp_var_plots_2[[1]] +  scale_y_continuous(labels = percent, limits=c(-0.02,0.02))))
+temp_list <- c(list(temp_var_plots_1[[1]] +  
+                      scale_y_continuous(labels = percent, limits=c(-0.015,0.02)) + 
+                      labs(x='Month',y='',title=paste('Response: ','Suicides Per Thousand Adolescents',' \nShock: ','Suicides Per Thousand Adults',sep=''))), 
+               list(temp_var_plots_2[[1]] +  
+                      scale_y_continuous(labels = percent, limits=c(-0.015,0.02)) + 
+                      labs(x='Month',y='',title=paste('Response: ','Suicides Per Thousand Adults',' \nShock: ','Suicides Per Thousand Adolescents',sep=''))))
 
 grid <- grid.arrange(grobs=temp_list, nrow=1,top='')
 ggsave(here('Plots', 'suicideOnly_VAR.png'),plot=grid,dpi=300, width = width, height = height, units='in')
 
 # try some arma models
+
+main_theme <- theme(panel.grid = element_blank(),
+                    panel.background = element_blank(),
+                    plot.title = element_text(size=16),
+                    plot.subtitle = element_text(size=8),
+                    axis.title.x = element_text(size=8),
+                    axis.title.y = element_text(size=8),
+                    axis.text.x = element_text(size=8),
+                    axis.text.y = element_text(size=8))
 
 max_lag <- 24
 
@@ -630,7 +667,7 @@ aic_plot <- ggplot(ardl_aic_tibble, aes(x=lag, y=aic)) +
 
 aic_plot
 
-ggsave(here('Plots', 'age24_arma_aic.png'),plot=aic_plot,dpi=300, width = 11.5, height = 9, units='in')
+ggsave(here('Plots', 'age24_arma_aic.png'),plot=aic_plot,dpi=300, width = 11.5, height = 8, units='in')
 
 best_model_coef <- coef(summary(ardl_models[[best_model_num]]))
 
@@ -695,7 +732,7 @@ aic_plot <- ggplot(ardl_aic_tibble, aes(x=lag, y=aic)) +
 
 aic_plot
 
-ggsave(here('Plots', 'age25_arma_aic.png'),plot=aic_plot,dpi=300, width = 11.5, height = 9, units='in')
+ggsave(here('Plots', 'age25_arma_aic.png'),plot=aic_plot,dpi=300, width = 11.5, height = 8, units='in')
 
 best_model_coef <- coef(summary(ardl_models[[best_model_num]]))
 
