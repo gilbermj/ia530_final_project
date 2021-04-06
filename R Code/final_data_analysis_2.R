@@ -111,10 +111,10 @@ pretty_station <- function(st_stats, clean_names){
     left_join(clean_names, by=c('stationarity_vars'='var_name')) %>%
     dplyr::arrange(clean_name) %>%
     dplyr::select('Variable Name'=clean_name,
-                  'Dickey-Fuller Test Stat'=df_testStat,
-                  'Phillips-Perron Test Stat'=pp_testStat,
-                  'Augmented Dickey-Fuller Test Stat'=adfgls_testStat,
-                  'KPSS Test Stat'=kpss_testStat,
+                  'ADF'=df_testStat,
+                  'PP'=pp_testStat,
+                  'ERS'=adfgls_testStat,
+                  'KPSS'=kpss_testStat,
                   df_result,
                   pp_result,
                   adfgls_result,
@@ -124,25 +124,25 @@ pretty_station <- function(st_stats, clean_names){
     tab_style(
       style = cell_fill(color = "lightgray", alpha=alpha_1),
       locations = cells_body(
-        columns = 'Dickey-Fuller Test Stat',
+        columns = 'ADF',
         rows = df_result==0)
     ) %>%
     tab_style(
       style = cell_fill(color = "lightgray", alpha=alpha_1),
       locations = cells_body(
-        columns = 'Phillips-Perron Test Stat',
+        columns = 'PP',
         rows = pp_result==0)
     ) %>%
     tab_style(
       style = cell_fill(color = "lightgray", alpha=alpha_1),
       locations = cells_body(
-        columns = 'Augmented Dickey-Fuller Test Stat',
+        columns = 'ERS',
         rows = adfgls_result==0)
     ) %>%
     tab_style(
       style = cell_fill(color = "lightgray", alpha=alpha_1),
       locations = cells_body(
-        columns = 'KPSS Test Stat',
+        columns = 'KPSS',
         rows = kpss_result==0)
     ) %>%
     cols_hide(columns=c('df_result',
@@ -204,13 +204,13 @@ var_models <- function(data, vars, out_months, response, runs=100, against_self=
     # get the nice names for graphing
     clean_name <- as.character(clean_names %>% filter(var_name==name) %>% dplyr::select(clean_name))
     
-    clean_name <- gsub('Adolescents','', clean_name)
-    clean_name <- gsub('Adults','', clean_name)
+    #clean_name <- gsub('Adolescents','', clean_name)
+    #clean_name <- gsub('Adults','', clean_name)
     
     response_name <- as.character(clean_names %>% filter(var_name==response) %>% dplyr::select(clean_name))
     
-    response_name <- gsub('Adolescents','', response_name)
-    response_name <- gsub('Adults','', response_name)
+    #response_name <- gsub('Adolescents','', response_name)
+    #response_name <- gsub('Adults','', response_name)
     
     if(name!='month_end' & (name!=response | against_self)){
       
@@ -225,7 +225,7 @@ var_models <- function(data, vars, out_months, response, runs=100, against_self=
         main_theme +
         labs(x='Month', 
              y='', 
-             title=paste('Response: ',response_name,' \nShock: ',clean_name,sep=''))
+             title=paste(clean_name,sep=''))
       
       temp_list <- append(temp_list, list(temp_plot))
       
@@ -481,7 +481,7 @@ temp_var_plots <- var_models(final_data_3,
                     against_self=T, 
                     clean=clean_names)
 
-grid <- grid.arrange(grobs=temp_var_plots, nrow=1,top='Adolescents')
+grid <- grid.arrange(grobs=temp_var_plots, nrow=1,top='Response of Suicides Per Thousand Adolescents to Various Shocks')
 ggsave(here('Plots', 'age24only_VAR.png'),plot=grid,dpi=300, width = width, height = height, units='in')
 
 temp_var_plots <- var_models(final_data_3, 
@@ -492,7 +492,7 @@ temp_var_plots <- var_models(final_data_3,
                     against_self=T, 
                     clean=clean_names)
 
-grid <- grid.arrange(grobs=temp_var_plots, nrow=1,top='Adolescents')
+grid <- grid.arrange(grobs=temp_var_plots, nrow=1,top='Response of Suicides Per Thousand Adolescents to Various Shocks')
 ggsave(here('Plots', 'age24only_reverse_VAR.png'),plot=grid,dpi=300, width = width, height = height, units='in')
 
 temp_var_plots <- var_models(final_data_3, 
@@ -503,7 +503,7 @@ temp_var_plots <- var_models(final_data_3,
                              against_self=T, 
                              clean=clean_names)
 
-grid <- grid.arrange(grobs=temp_var_plots, nrow=1,top='Adolescents')
+grid <- grid.arrange(grobs=temp_var_plots, nrow=1,top='Response of Suicides Per Thousand Adolescents to Various Shocks')
 ggsave(here('Plots', 'age24commonSocietal_VAR.png'),plot=grid,dpi=300, width = width, height = height, units='in')
 
 temp_var_plots <- var_models(final_data_3, 
@@ -514,7 +514,7 @@ temp_var_plots <- var_models(final_data_3,
                              against_self=T, 
                              clean=clean_names)
 
-grid <- grid.arrange(grobs=temp_var_plots, nrow=1,top='Adolescents')
+grid <- grid.arrange(grobs=temp_var_plots, nrow=1,top='Response of Suicides Per Thousand Adolescents to Various Shocks')
 ggsave(here('Plots', 'age24commonEconomic_VAR.png'),plot=grid,dpi=300, width = 12, height = height, units='in')
 
 temp_var_plots <- var_models(final_data_3, 
@@ -529,7 +529,7 @@ width <- 11.5
 
 layout <- rbind(c(1,2,3), c(4,5,6), c(NA,7,NA))
 
-grid <- grid.arrange(grobs=temp_var_plots,layout_matrix=layout, nrow=3,top='Adolescents')
+grid <- grid.arrange(grobs=temp_var_plots,layout_matrix=layout, nrow=3,top='Response of Suicides Per Thousand Adolescents to Various Shocks')
 ggsave(here('Plots', 'age24all_VAR.png'),plot=grid,dpi=300, width = width, height = height, units='in')
 
 # 25 and older
@@ -545,7 +545,7 @@ temp_var_plots <- var_models(final_data_3,
                              against_self=T, 
                              clean=clean_names)
 
-grid <- grid.arrange(grobs=temp_var_plots, nrow=1,top='Adults')
+grid <- grid.arrange(grobs=temp_var_plots, nrow=1,top='Response of Suicides Per Thousand Adults to Various Shocks')
 ggsave(here('Plots', 'age25only_VAR.png'),plot=grid,dpi=300, width = width, height = height, units='in')
 
 temp_var_plots <- var_models(final_data_3, 
@@ -556,7 +556,7 @@ temp_var_plots <- var_models(final_data_3,
                              against_self=T, 
                              clean=clean_names)
 
-grid <- grid.arrange(grobs=temp_var_plots, nrow=1,top='Adults')
+grid <- grid.arrange(grobs=temp_var_plots, nrow=1,top='Response of Suicides Per Thousand Adults to Various Shocks')
 ggsave(here('Plots', 'age25only_reverse_VAR.png'),plot=grid,dpi=300, width = width, height = height, units='in')
 
 temp_var_plots <- var_models(final_data_3, 
@@ -567,7 +567,7 @@ temp_var_plots <- var_models(final_data_3,
                              against_self=T, 
                              clean=clean_names)
 
-grid <- grid.arrange(grobs=temp_var_plots, nrow=1,top='Adults')
+grid <- grid.arrange(grobs=temp_var_plots, nrow=1,top='Response of Suicides Per Thousand Adults to Various Shocks')
 ggsave(here('Plots', 'age25commonSocietal_VAR.png'),plot=grid,dpi=300, width = width, height = height, units='in')
 
 temp_var_plots <- var_models(final_data_3, 
@@ -578,7 +578,7 @@ temp_var_plots <- var_models(final_data_3,
                              against_self=T, 
                              clean=clean_names)
 
-grid <- grid.arrange(grobs=temp_var_plots, nrow=1,top='Adults')
+grid <- grid.arrange(grobs=temp_var_plots, nrow=1,top='Response of Suicides Per Thousand Adults to Various Shocks')
 ggsave(here('Plots', 'age25commonEconomic_VAR.png'),plot=grid,dpi=300, width = 12, height = height, units='in')
 
 temp_var_plots <- var_models(final_data_3, 
@@ -593,7 +593,7 @@ width <- 11.5
 
 layout <- rbind(c(1,2,3), c(4,5,6), c(NA,7,NA))
 
-grid <- grid.arrange(grobs=temp_var_plots,layout_matrix=layout, nrow=3,top='Adults')
+grid <- grid.arrange(grobs=temp_var_plots,layout_matrix=layout, nrow=3,top='Response of Suicides Per Thousand Adults to Various Shocks')
 ggsave(here('Plots', 'age25all_VAR.png'),plot=grid,dpi=300, width = width, height = height, units='in')
 
 temp_var_plots_1 <- var_models(final_data_3, 
