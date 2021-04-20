@@ -160,7 +160,13 @@ var_models <- function(data, vars, out_months, response, runs=100, against_self=
   temp_data <- data %>%
     dplyr::select(month_end, vars, all_of(response))
   
-  ts <- temp_data %>% ts()
+  start_year <- year(min(temp_data$month_end))
+  start_month <- month(min(temp_data$month_end))
+  
+  temp_data <- temp_data %>%
+    dplyr::select(-c(month_end))
+  
+  ts <- temp_data %>% ts(start=c(start_year,start_month), frequency=12)
   
   # convert to time-series and the VAR models
   var_model <- VAR(ts, lag.max = 12, ic = 'AIC')
@@ -470,7 +476,7 @@ main_theme <- theme(panel.grid = element_blank(),
 
 height <- 5
 width <- 17
-runs <- 500
+runs <- 1000
 out_months <- 30
 
 temp_var_plots <- var_models(final_data_3, 
